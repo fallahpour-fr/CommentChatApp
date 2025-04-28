@@ -224,7 +224,7 @@ function CometChatBuilderApp({ user, group }: CometChatHomeProps) {
   return (
     <div className="CometChatBuilderApp">
       <AppContextProvider>
-        {loggedInUser ? <CometChatHome defaultGroup={group} defaultUser={user} /> : <LoginPlaceholder />}
+        {loggedInUser ? <CometChatHome  /> : <LoginPlaceholder />}
       </AppContextProvider>
     </div>
   );
