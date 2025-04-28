@@ -198,16 +198,15 @@
 // export default App;
 
 import "./App.css";
-import React, { useEffect, useState } from "react";
-import { CometChat } from "@cometchat/chat-sdk-javascript";
+import { useEffect, useState, Fragment } from "react";
 import { CometChatHome } from "CometChat/components/CometChatHome/CometChatHome";
-import CometChatLogin from "CometChat/components/CometChatLogin/CometChatLogin";
+import { CometChatLogin } from "CometChat/components/CometChatLogin/index";
 import { AppContextProvider } from "CometChat/context/AppContext";
 import { fontSizes } from "CometChat/styleConfig";
 import { useBuilderSettingContext } from "CometChat/context/BuilderSettingsContext";
 import useSystemColorScheme from "CometChat/customHooks";
 import { generateExtendedColors } from "CometChat/utils/utils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import '@cometchat/chat-uikit-react/dist/styles/css-variables.css';
 
@@ -228,22 +227,23 @@ function App() {
         });
         axios.defaults.headers.common['accessToken'] = accessToken;
         setAuthState(response.data.data.user);
+        // console.log('response', response.data.data.user)
       } catch (error) {
-        // console.error('Authentication error', error);
-        // navigate('/landing');
+        console.log('err1')
         console.error('Authentication error', error);
         if (axios.isAxiosError(error)) {
           console.error('Axios error response:', error.response);
         }
-        navigate('/landing');
+        // navigate('/landing');
       }
     }
 
     const access = localStorage.getItem('accessToken');
+    // console.log('access', access);
     if (access) {
       checkAuthentication(access);
     } else {
-      navigate('/landing');
+      // navigate('/landing');
     }
   }, [navigate]);
 
@@ -356,7 +356,12 @@ function App() {
   return (
     <div className="App">
       <AppContextProvider>
-        {authState ? <CometChatHome /> : <CometChatLogin />}
+        <Fragment>
+          <Routes>
+            <Route path='/home' element={<CometChatHome />} />
+          </Routes>
+        </Fragment>
+        {/* {authState ? <CometChatHome /> : <CometChatLogin />} */}
       </AppContextProvider>
     </div>
   );
